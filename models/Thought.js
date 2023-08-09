@@ -1,6 +1,6 @@
-const { Thought, model } = require('mongoose');
-const reactionSchema = require('reaction');
-const dayFormat = require("../utils/dayFormat");
+const { Schema, model } = require('mongoose');
+const reactionSchema = require('./Reaction');
+const {format_date} = require("../utils/dayFormat");
 
 const thoughtSchema = new Schema(
   {
@@ -17,7 +17,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: (date) => dayFormat(date)
+      get: (date) => format_date(date)
     },
     reactions: [
         reactionSchema
@@ -33,7 +33,7 @@ const thoughtSchema = new Schema(
 );
 
 thoughtSchema.virtual("reactionCount").get(function () {
-    return this.reaction.length
+    return this.reactions.length
 })
 
 const Thought = model('thought', thoughtSchema);
