@@ -43,30 +43,30 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
 
-      if (!course) {
-        res.status(404).json({ message: 'No course with that ID' });
+      if (!thought) {
+        res.status(404).json({ message: 'No thought with that ID' });
       }
 
-      await Student.deleteMany({ _id: { $in: course.students } });
-      res.json({ message: 'Course and students deleted!' });
+      await User.deleteMany({ _id: { $in: thought.users } });
+      res.json({ message: 'Thought deleted!' });
     } catch (err) {
       res.status(500).json(err);
     }
   },
-  // Update a course
-  async updateCourse(req, res) {
+  // Update a thought
+  async updateThought(req, res) {
     try {
-      const course = await Course.findOneAndUpdate(
-        { _id: req.params.courseId },
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
         { $set: req.body },
         { runValidators: true, new: true }
       );
 
-      if (!course) {
-        res.status(404).json({ message: 'No course with this id!' });
+      if (!thought) {
+        res.status(404).json({ message: 'No thought with this id!' });
       }
 
-      res.json(course);
+      res.json(thought);
     } catch (err) {
       res.status(500).json(err);
     }
